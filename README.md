@@ -16,3 +16,9 @@ As mentioned above, we spoke with Professor Czajka on how to best structure this
 ## Final Thoughts
 
 We acknowledge that predicting returns on pretty much any financial instrument is a difficult endeavor and that our success might be somewhat limited for a project like this. After all, trillions of dollars are poured into hedge funds and quantitative finance firms to arbitrage the market like this. That being said, we hope that implementing sentiment analysis will aid in raising our success. Further, as discussed with Professor Czajka, we may need to swap one of the practical assessments in order to get some practice with recurrent neural networks in time to implement our project.
+
+### Contributions
+
+Walker: Overview, Network Architecture, Final Thoughts
+
+Will: Data Sets, Final Thoughts
