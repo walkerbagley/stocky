@@ -43,12 +43,10 @@ The dataset for the S&P index values has one value per day (excluding weekends) 
 ## Sample Dataset Entries
 
 - Index Data:
-- Date	    Price	    Open	    High	    Low	        Vol.	  Change %
-- 6/9/2008	1,361.76	1,360.83	1,370.63	1,350.62		nan     0.08%
+- Date:  6/9/2008  Price: 1,361.76  Open: 1,360.83  High: 1,370.63  Low: 1,350.62  Change %: 0.08%
 
 - News Data:
-- Date	    News
-- 6/8/2008	b'Marriage, they said, was reduced to the status of a commercial transaction in which women could be discarded by husbands claiming to have discovered hidden defects in them.'
+- Date: 6/8/2008  News: b'Marriage, they said, was reduced to the status of a commercial transaction in which women could be discarded by husbands claiming to have discovered hidden defects in them.'
 
 
 
