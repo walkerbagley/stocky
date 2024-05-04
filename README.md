@@ -75,3 +75,63 @@ We are also going to be looking more deeply at which inputs to the network lead 
 Walker: LSTM library, Performance Metrics, Report
 
 Will: Initial Model Architecture, Model Testing, Results Plotting, Report
+
+# Part 4
+
+## How to run
+
+To run a trained model on the testing data, open [model_testing.ipynb](model_testing.ipynb) in Google Colab. Then download the [trained model checkpoint](Models/Price-50-100E-0_8828.keras), the [testing dataset](Datasets/Processed Data/normalized_testing_data.csv), and our [customLSTM Module](lstm.py). Upload these to the Colab runtime and run all lines.
+
+## Test Database
+
+For the test database, it was hard to find a database with a large amount of news headline data over a long period of time. However, we didn’t want to use the same dataset and just make a test split from that as it would be hard to tell how the model would generalize to completely new data. As a result, we decided to compile some news headlines and stock data together to create a new testing dataset to use. We did this by taking all English headlines from this [kaggle dataset](https://www.kaggle.com/datasets/everydaycodings/global-news-dataset) and taking only 5 of the headlines from each day to perform Vader sentiment analysis on. Then, based on the dates from the dataset, we collected price information on the S&P 500 index fund from publicly available data on [investing.com](https://www.investing.com/indices/us-spx-500-historical-data) and then added all of the sentiment scores to the corresponding dates. 
+
+The process for creating this dataset was very similar to how we created the training and validation sets, however, the amount of dates available from this dataset was not very many and as a result, the testing dataset is around a month's worth of stock and corresponding news article data. This testing set is quite small and in making the dataset we realized that to use a model like this, someone may not have a lot of past sentiment or stock data. Because of this and because of the fact that the model still performed quite well on a smaller number of backward time steps, we decided to train the model only using 5 time steps which would represent one business week. As a result, we hoped this would help the model better generalize to newer data where there is not a lot of history to work with at times. 
+
+The main difference between this testing set and the training and validation set is the fact that we used news headlines not just from Reddit and the dates we chose were not continuous from where the training and validation left off. I believe these differences are significant enough to see how well the model generalizes because the stock data can always be grabbed and a user can always manually store news headline data even if they are not doing so from Reddit.
+
+## Results
+
+### Accuracy
+
+After making some changes to the previous model by reducing the number of timesteps to n=5 and changing the number of hidden units to be equal to 2n per the advice of Professor Czajka, we trained the model for 200 epochs and saw a training R2 score of 0.999 and a Validation R2 score of 0.994. 
+
+**Validation Plot**
+
+![validation_plot](https://github.com/walkerbagley/stocky/assets/123012662/3344e044-992b-4b4b-b83c-30f0265c999f)
+
+The testing set saw quite a bit of drop-off in its accuracy as the model achieved an R2 score of 0.8195. 
+
+**Testing Plot**
+
+![testing_plot](https://github.com/walkerbagley/stocky/assets/123012662/5bd38eb7-6bea-4ff4-9195-ccfc029bb4af)
+
+### Interpreting Results and Potential Improvements
+
+
+While the accuracy was certainly nowhere near as good as on the training and validation sets, it still exceeded our expectations. 
+
+This may be due to a few reasons, firstly:
+
+**Lack of Training-Testing Continuity**
+ * With a time series such as stock data, being able to have your training set carry over directly into the test set that you are trying to predict can be very helpful as there are many patterns that can be learned from the stock that will be lost if there is a gap between the two. Ideally, we would want to train this model up until the current day and then begin trying to predict the price of the next day. However, this is obviously harder than it seems and requires a ton of data to be accumulated before trying to make it work. On the opposite end of the spectrum, it could be more helpful to have a model that may not be as accurate but can generalize well to any timeline even without continuity from what it was trained on. Because of these things, it is not immediately clear what would be better but I think it seems pretty clear that the testing accuracy would certainly be higher if the dates started right after the training set dates ended.
+
+**Here is an example of what we would want to do**
+
+![splits](https://github.com/walkerbagley/stocky/assets/123012662/67c7f649-34fb-430b-af95-8b1c585b00ba)
+
+                    
+**Smaller Testing Dataset**
+* Because the dataset is small and we knew that it might be going into this, we decided to have fewer time steps before each prediction. This fact may mean that because the model isn’t able to look back as far, it is not getting as much helpful information about potential changes. The small number of time steps seemed to work well for the training set but there could be a potential for this to not translate well if the data is disjoint from the testing data in terms of time. In that case, it might actually generalize better with a higher number of steps to look back on.
+
+**Different News Data**
+* When looking at the two different data sets for news sentiment, it was pretty obvious to me that the Reddit dataset had a much better quality of headlines than the World News one did. This is because the world news dataset had a lot of different countries and languages of news and as a result, we had to cut down a lot of data points in order to get the readable English entries. Also, we just chose the first 5 news articles for each day whereas the Reddit data set used the top 5 articles per day in terms of the number of upvotes. This means the Reddit dataset could have had more meaningful articles. Along with the meaningfulness of the articles, the Reddit headlines were much more descriptive than the descriptions in the world news dataset which could make a large difference. In the future, we would want to get all our data from the same sources in the same way but obviously, this is not always feasible. 
+
+Overall, our main improvements to this model would be to be able to train on a larger dataset that leads straight into the data we are trying to predict using all the data from the same source.
+
+### Contributions
+
+Walker: Hyperparameter Tuning, Model Training, Report
+
+Will: Testing Set Curation, Testing Set Pre-processing, Report
+
