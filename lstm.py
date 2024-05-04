@@ -30,9 +30,9 @@ class customLSTM():
             self.trained = 0
             self.tested = 0
             self.model = Sequential()
-            self.model.add(LSTM(50, activation='relu', input_shape=(n_steps, n_features)))
+            self.model.add(LSTM(n_steps * 2, activation='relu', input_shape=(n_steps, n_features)))
             self.model.add(Dense(1))
-            self.model.compile(optimizer='sgd', loss='mse', metrics=[R2Score()])
+            self.model.compile(optimizer='adam', loss='mse', metrics=[R2Score()])
             print(self.model.summary())
         else:
             self.model = load_model(path)
@@ -67,9 +67,11 @@ class customLSTM():
         self.trained = 1
         self.tested = 0
         self.epochs = epochs
-        self.trainingset = df
-        self.Xtrain, self.Ytrain = self.sequence_df(df)
-        self.model.fit(self.Xtrain, self.Ytrain, epochs = epochs, verbose = verbose)
+        self.trainingset = df.iloc[:int(len(df)*0.8)]
+        self.validationset = df.iloc[int(len(df)*0.8):]
+        self.Xtrain, self.Ytrain = self.sequence_df(self.trainingset)
+        self.Xval, self.Yval = self.sequence_df(self.validationset)
+        self.model.fit(self.Xtrain, self.Ytrain, validation_data=(self.Xval, self.Yval), epochs = epochs, verbose = verbose)
 
     def test(self, df, verbose = 1):
         self.tested = 1
