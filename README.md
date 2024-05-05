@@ -80,7 +80,7 @@ Will: Initial Model Architecture, Model Testing, Results Plotting, Report
 
 ## How to run
 
-To run a trained model on the testing data, open [model_testing.ipynb](model_testing.ipynb) in Google Colab. Then download the [trained model checkpoint](Models/Price-50-100E-0_8828.keras), the [testing dataset](Datasets/Processed Data/normalized_testing_data.csv), and our [customLSTM Module](lstm.py). Upload these to the Colab runtime and run all lines.
+To run a trained model on the testing data, open [model_testing.ipynb](model_testing.ipynb) in Google Colab. Then download the [trained model checkpoint](Models/Price-5-200E-0_8195.keras), the [testing dataset](<Datasets/Processed Data/normalized_testing_data.csv>), and our [customLSTM Module](lstm.py). Upload these to the Colab runtime and run all lines.
 
 ## Test Database
 
